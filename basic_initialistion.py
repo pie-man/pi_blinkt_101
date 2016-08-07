@@ -4,7 +4,7 @@ from time import sleep
 from blinkt import set_pixel, show
 
 def rotate(list,shift):
-    return list[shift:] + list[:shift]
+    return list[0 - shift:] + list[:0 - shift]
 
 def show_state(state):
      for pixel in range(8):
@@ -22,12 +22,9 @@ def cycle(times,states,sleep_time=1,gap=1):
 
 def chase(state, max_count=40, delay=1, style=1, bounce=7):
     direction = 1
-    if style == 2 or style == 3:
-    #if style == 2:
+    if style == 2:
         direction = -1
 
-    show_state(state)
-    state = rotate(state, direction)
     count = 0
     
     while count <= max_count:
@@ -70,24 +67,24 @@ for pixel in range(8):
     loc = pixel * 45
     rainbow.append(degrees[loc])
 
-# cycle(360, degrees, .1, 20)
-# 
-# sleep(5)
-# turn_off()
-# 
-# chase(rainbow, 60, 0.1)
-# chase(rainbow, 60, 0.1, 2)
-# chase(rainbow, 60, 0.1, 3)
-# sleep(2)
-# 
-# state = set_one_on(single_red)
-# chase(state, 63, 0.1, 3)
-# state = set_one_on(single_grn)
-# chase(state, 63, 0.1, 3)
+cycle(360, degrees, .1, 20)
+
+sleep(5)
+turn_off()
+
+chase(rainbow, 60, 0.1)
+chase(rainbow, 60, 0.1, 2)
+chase(rainbow, 60, 0.1, 3)
+sleep(2)
+
+state = set_one_on(single_red)
+chase(state, 63, 0.1, 3)
+state = set_one_on(single_grn)
+chase(state, 63, 0.1, 3)
 state = set_one_on(single_blu, single_grn)
 chase(state, 63, 0.1, 3)
-state = [single_blk, single_blk, single_blk, single_blk,
-         single_blk, single_blk, single_red, single_red]
+state = [single_red, single_red, single_blk, single_blk,
+         single_blk, single_blk, single_blk, single_blk]
 chase(state, 60, 0.2, 3, 6)
 sleep(3)
 turn_off()
