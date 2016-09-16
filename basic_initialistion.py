@@ -4,7 +4,7 @@ from time import sleep
 from blinkt import set_pixel, show
 
 def rotate(list,shift):
-    return list[0 - shift:] + list[:0 - shift]
+    return list[0 + shift:] + list[:0 + shift]
 
 def show_state(state):
      for pixel in range(8):
@@ -24,9 +24,9 @@ def cycle(times,states,sleep_time=1,gap=None):
     return state
 
 def chase(state, max_count=40, delay=1, style=1, bounce=7):
-    direction = 1
+    direction = -1
     if style == 2:
-        direction = -1
+        direction = 1
     count = 0
     while count <= max_count:
         count += 1
@@ -52,24 +52,20 @@ def set_two_tone(colour_a, colour_b=(0, 0, 0), split=1):
         state.append(colour_b)
     return state
 
-def kit_chase(colour, iterations=7, fade=5, delay=1, background=(0,0,0)):
+def kit_chase(colour, iterations=100, fade=6, delay=0.1, background=(0,0,0)):
     current_pixel = 0
-    decrement = 1.0 / float(fade)
+    decrement = 100.0** (1 / float(fade))
     level = [0.0 for x in range(8)]
-    count = 0
-    while count < iterations:
-        if current_pixel == 0:
-            step = 1
-            count += 1
-        if current_pixel == 7:
-            step = -1
-            count += 1
-        level = [max(x - decrement, 0) for x in level]
+    step = -1
+    for _ in range(iterations):
+        if current_pixel % 7 == 0:
+            step = 0 - step  
+        level = [max(x / decrement, 0) for x in level]
         level[current_pixel] = 1.0
         for pixel in range(8):
            set_pixel(pixel, *colour, brightness=level[pixel])
         show()
-        print("{0:1.2f} {1:1.2f} {2:1.2f} {3:1.2f} {4:1.2f} {5:1.2f} {6:1.2f} {7:1.2f}".format(*level))
+        print("{0:d} :  {1:1.2f} {2:1.2f} {3:1.2f} {4:1.2f} {5:1.2f} {6:1.2f} {7:1.2f} {8:1.2f}".format(current_pixel, *level))
         current_pixel += step
         sleep(delay)
     
@@ -92,28 +88,29 @@ for pixel in range(8):
     loc = pixel * 45
     colour_swatch.append(degrees[loc])
 
-state = cycle(360, degrees, .1, 20)
+#state = cycle(360, degrees, .1, 20)
 
-sleep(5)
+#sleep(5)
 turn_off()
 
-state = chase(colour_swatch, 60, 0.1)
-state = chase(colour_swatch, 60, 0.1, 2)
-state = chase(colour_swatch, 60, 0.1, 3)
-sleep(2)
+#state = chase(colour_swatch, 60, 0.1)
+#state = chase(colour_swatch, 60, 0.1, 2)
+#state = chase(colour_swatch, 60, 0.1, 3)
+#sleep(2)
 
 state = set_two_tone(red_pixel)
 state = chase(state, 63, 0.1, 3)
-state = set_two_tone(grn_pixel)
-state = chase(state, 63, 0.1, 3)
-state = set_two_tone(blu_pixel, red_pixel)
-state = chase(state, 63, 0.1, 3)
-for build in range(2,8):
-    state = set_two_tone(ppl_pixel, split=build)
-    state = chase(state, (8-build)*4, 0.1, 3, 8-build)
-for decline in range(2,8):
-    state = set_two_tone(blk_pixel, ppl_pixel, split=decline)
-    state = chase(state, (8-decline)*8, 0.1, 3, 8-decline)
+#state = set_two_tone(grn_pixel)
+#state = chase(state, 63, 0.1, 3)
+#state = set_two_tone(blu_pixel, red_pixel)
+#state = chase(state, 63, 0.1, 3)
+#for build in range(2,8):
+    #state = set_two_tone(ppl_pixel, split=build)
+    #state = chase(state, (8-build)*4, 0.1, 3, 8-build)
+#for decline in range(2,8):
+    #state = set_two_tone(blk_pixel, ppl_pixel, split=decline)
+    #state = chase(state, (8-decline)*8, 0.1, 3, 8-decline)
 
+state = kit_chase(red_pixel, iterations=120, fade=6, delay=0.1, background=(0,0,0))
 sleep(3)
 state = turn_off()
