@@ -88,28 +88,28 @@ for pixel in range(8):
     loc = pixel * 45
     colour_swatch.append(degrees[loc])
 
-#state = cycle(360, degrees, .1, 20)
+state = cycle(360, degrees, .1, 20)
 
-#sleep(5)
+sleep(5)
 turn_off()
 
-#state = chase(colour_swatch, 60, 0.1)
-#state = chase(colour_swatch, 60, 0.1, 2)
-#state = chase(colour_swatch, 60, 0.1, 3)
-#sleep(2)
+state = chase(colour_swatch, 60, 0.1)
+state = chase(colour_swatch, 60, 0.1, 2)
+state = chase(colour_swatch, 60, 0.1, 3)
+sleep(2)
 
 state = set_two_tone(red_pixel)
 state = chase(state, 63, 0.1, 3)
-#state = set_two_tone(grn_pixel)
-#state = chase(state, 63, 0.1, 3)
-#state = set_two_tone(blu_pixel, red_pixel)
-#state = chase(state, 63, 0.1, 3)
-#for build in range(2,8):
-    #state = set_two_tone(ppl_pixel, split=build)
-    #state = chase(state, (8-build)*4, 0.1, 3, 8-build)
-#for decline in range(2,8):
-    #state = set_two_tone(blk_pixel, ppl_pixel, split=decline)
-    #state = chase(state, (8-decline)*8, 0.1, 3, 8-decline)
+state = set_two_tone(grn_pixel)
+state = chase(state, 63, 0.1, 3)
+state = set_two_tone(blu_pixel, red_pixel)
+state = chase(state, 63, 0.1, 3)
+for build in range(2,8):
+    state = set_two_tone(ppl_pixel, split=build)
+    state = chase(state, (8-build)*4, 0.1, 3, 8-build)
+for decline in range(2,8):
+    state = set_two_tone(blk_pixel, ppl_pixel, split=decline)
+    state = chase(state, (8-decline)*8, 0.1, 3, 8-decline)
 
 state = kit_chase(red_pixel, iterations=120, fade=6, delay=0.1, background=(0,0,0))
 sleep(3)
